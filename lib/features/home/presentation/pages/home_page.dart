@@ -6,6 +6,9 @@ import '../widgets/content_carousel.dart';
 import '../widgets/featured_content.dart';
 import '../widgets/category_selector.dart';
 import '../../domain/entities/content_entity.dart';
+import '../../../explore/presentation/pages/explore_page.dart';
+import '../../../player/presentation/pages/player_page.dart';
+import '../../../downloads/presentation/pages/downloads_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -15,6 +18,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  int _currentIndex = 0;
+
   // Mock data - In a real app, this would come from a repository
   final List<String> categories = [
     'All', 'Movies', 'TV Shows', 'Originals', 'Documentaries'
@@ -35,156 +40,22 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
     return Scaffold(
-      body: SafeArea(
-        child: CustomScrollView(
-          slivers: [
-            // App Bar
-            SliverAppBar(
-              floating: true,
-              pinned: false,
-              backgroundColor: ColorPalette.backgroundColor,
-              title: Row(
-                children: [
-                  Text(
-                    'OTT',
-                    style: theme.textTheme.headlineMedium?.copyWith(
-                      color: ColorPalette.primaryColor,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const Text(
-                    'Stream',
-                    style: TextStyle(
-                      color: ColorPalette.textPrimaryColor,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ],
-              ),
-              actions: [
-                IconButton(
-                  icon: const Icon(Icons.search),
-                  onPressed: () {
-                    // Navigate to search
-                  },
-                ),
-                IconButton(
-                  icon: const Icon(Icons.person_outline),
-                  onPressed: () {
-                    // Navigate to profile
-                  },
-                ),
-              ],
-            ),
+      body: IndexedStack(
+        index: _currentIndex,
+        children: [
+          // Home Tab
+          _buildHomeTab(),
 
-            // Featured Content
-            SliverToBoxAdapter(
-              child: FeaturedContent(content: featuredContent),
-            ),
+          // Explore Tab
+          const ExplorePage(),
 
-            // Categories
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: const EdgeInsets.only(top: 16.0),
-                child: CategorySelector(
-                  categories: categories,
-                  onCategorySelected: (category) {
-                    // Handle category selection
-                    print('Selected category: $category');
-                  },
-                ),
-              ),
-            ),
+          // Player Tab
+          const PlayerPage(),
 
-            // Trending Now
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: const EdgeInsets.only(left: 16.0, top: 16.0, bottom: 8.0),
-                child: Text(
-                  'Trending Now',
-                  style: theme.textTheme.titleLarge,
-                ),
-              ),
-            ),
-
-            SliverToBoxAdapter(
-              child: SizedBox(
-                height: 200,
-                child: ContentCarousel(
-                  contentType: 'trending',
-                ),
-              ),
-            ),
-
-            // Popular Movies
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: const EdgeInsets.only(left: 16.0, top: 16.0, bottom: 8.0),
-                child: Text(
-                  'Popular Movies',
-                  style: theme.textTheme.titleLarge,
-                ),
-              ),
-            ),
-
-            SliverToBoxAdapter(
-              child: SizedBox(
-                height: 200,
-                child: ContentCarousel(
-                  contentType: 'movies',
-                ),
-              ),
-            ),
-
-            // Top TV Shows
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: const EdgeInsets.only(left: 16.0, top: 16.0, bottom: 8.0),
-                child: Text(
-                  'Top TV Shows',
-                  style: theme.textTheme.titleLarge,
-                ),
-              ),
-            ),
-
-            SliverToBoxAdapter(
-              child: SizedBox(
-                height: 200,
-                child: ContentCarousel(
-                  contentType: 'tv',
-                ),
-              ),
-            ),
-
-            // Recently Added
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: const EdgeInsets.only(left: 16.0, top: 16.0, bottom: 8.0),
-                child: Text(
-                  'Recently Added',
-                  style: theme.textTheme.titleLarge,
-                ),
-              ),
-            ),
-
-            SliverToBoxAdapter(
-              child: SizedBox(
-                height: 200,
-                child: ContentCarousel(
-                  contentType: 'recent',
-                ),
-              ),
-            ),
-
-            // Bottom padding
-            const SliverToBoxAdapter(
-              child: SizedBox(height: 24),
-            ),
-          ],
-        ),
+          // Downloads Tab
+          const DownloadsPage(),
+        ],
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: const [
@@ -205,10 +76,165 @@ class _HomePageState extends State<HomePage> {
             label: 'Downloads',
           ),
         ],
-        currentIndex: 0,
+        currentIndex: _currentIndex,
         onTap: (index) {
-          // Handle navigation
+          setState(() {
+            _currentIndex = index;
+          });
         },
+      ),
+    );
+  }
+
+  Widget _buildHomeTab() {
+    final theme = Theme.of(context);
+
+    return SafeArea(
+      child: CustomScrollView(
+        slivers: [
+          // App Bar
+          SliverAppBar(
+            floating: true,
+            pinned: false,
+            backgroundColor: ColorPalette.backgroundColor,
+            title: Row(
+              children: [
+                Text(
+                  'OTT',
+                  style: theme.textTheme.headlineMedium?.copyWith(
+                    color: ColorPalette.primaryColor,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const Text(
+                  'Stream',
+                  style: TextStyle(
+                    color: ColorPalette.textPrimaryColor,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ],
+            ),
+            actions: [
+              IconButton(
+                icon: const Icon(Icons.search),
+                onPressed: () {
+                  // Navigate to search
+                },
+              ),
+              IconButton(
+                icon: const Icon(Icons.person_outline),
+                onPressed: () {
+                  // Navigate to profile
+                },
+              ),
+            ],
+          ),
+
+          // Featured Content
+          SliverToBoxAdapter(
+            child: FeaturedContent(content: featuredContent),
+          ),
+
+          // Categories
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: const EdgeInsets.only(top: 16.0),
+              child: CategorySelector(
+                categories: categories,
+                onCategorySelected: (category) {
+                  // Handle category selection
+                  print('Selected category: $category');
+                },
+              ),
+            ),
+          ),
+
+          // Trending Now
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: const EdgeInsets.only(left: 16.0, top: 16.0, bottom: 8.0),
+              child: Text(
+                'Trending Now',
+                style: theme.textTheme.titleLarge,
+              ),
+            ),
+          ),
+
+          SliverToBoxAdapter(
+            child: SizedBox(
+              height: 200,
+              child: ContentCarousel(
+                contentType: 'trending',
+              ),
+            ),
+          ),
+
+          // Popular Movies
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: const EdgeInsets.only(left: 16.0, top: 16.0, bottom: 8.0),
+              child: Text(
+                'Popular Movies',
+                style: theme.textTheme.titleLarge,
+              ),
+            ),
+          ),
+
+          SliverToBoxAdapter(
+            child: SizedBox(
+              height: 200,
+              child: ContentCarousel(
+                contentType: 'movies',
+              ),
+            ),
+          ),
+
+          // Top TV Shows
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: const EdgeInsets.only(left: 16.0, top: 16.0, bottom: 8.0),
+              child: Text(
+                'Top TV Shows',
+                style: theme.textTheme.titleLarge,
+              ),
+            ),
+          ),
+
+          SliverToBoxAdapter(
+            child: SizedBox(
+              height: 200,
+              child: ContentCarousel(
+                contentType: 'tv',
+              ),
+            ),
+          ),
+
+          // Recently Added
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: const EdgeInsets.only(left: 16.0, top: 16.0, bottom: 8.0),
+              child: Text(
+                'Recently Added',
+                style: theme.textTheme.titleLarge,
+              ),
+            ),
+          ),
+
+          SliverToBoxAdapter(
+            child: SizedBox(
+              height: 200,
+              child: ContentCarousel(
+                contentType: 'recent',
+              ),
+            ),
+          ),
+
+          // Bottom padding
+          const SliverToBoxAdapter(
+            child: SizedBox(height: 24),
+          ),
+        ],
       ),
     );
   }
