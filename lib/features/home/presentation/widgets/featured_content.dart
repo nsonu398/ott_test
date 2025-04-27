@@ -7,10 +7,7 @@ import '../../domain/entities/content_entity.dart';
 class FeaturedContent extends StatelessWidget {
   final ContentEntity content;
 
-  const FeaturedContent({
-    Key? key,
-    required this.content,
-  }) : super(key: key);
+  const FeaturedContent({Key? key, required this.content}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -47,11 +44,18 @@ class FeaturedContent extends StatelessWidget {
                   gradient: LinearGradient(
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
-                    colors: [ColorPalette.surfaceColor, ColorPalette.backgroundColor],
+                    colors: [
+                      ColorPalette.surfaceColor,
+                      ColorPalette.backgroundColor,
+                    ],
                   ),
                 ),
                 child: const Center(
-                  child: Icon(Icons.image_not_supported, size: 48, color: ColorPalette.textSecondaryColor),
+                  child: Icon(
+                    Icons.image_not_supported,
+                    size: 48,
+                    color: ColorPalette.textSecondaryColor,
+                  ),
                 ),
               );
             },
@@ -84,11 +88,18 @@ class FeaturedContent extends StatelessWidget {
                     if (i > 0)
                       const Padding(
                         padding: EdgeInsets.symmetric(horizontal: 4.0),
-                        child: Text('•', style: TextStyle(color: ColorPalette.textSecondaryColor)),
+                        child: Text(
+                          '•',
+                          style: TextStyle(
+                            color: ColorPalette.textSecondaryColor,
+                          ),
+                        ),
                       ),
                     Text(
                       content.categories[i],
-                      style: theme.textTheme.bodySmall?.copyWith(color: ColorPalette.textSecondaryColor),
+                      style: theme.textTheme.bodySmall?.copyWith(
+                        color: ColorPalette.textSecondaryColor,
+                      ),
                     ),
                   ],
                 ],
@@ -101,23 +112,38 @@ class FeaturedContent extends StatelessWidget {
                 children: [
                   Text(
                     content.releaseYear.toString(),
-                    style: theme.textTheme.bodySmall?.copyWith(color: ColorPalette.textSecondaryColor),
+                    style: theme.textTheme.bodySmall?.copyWith(
+                      color: ColorPalette.textSecondaryColor,
+                    ),
                   ),
                   const Padding(
                     padding: EdgeInsets.symmetric(horizontal: 4.0),
-                    child: Text('•', style: TextStyle(color: ColorPalette.textSecondaryColor)),
+                    child: Text(
+                      '•',
+                      style: TextStyle(color: ColorPalette.textSecondaryColor),
+                    ),
                   ),
                   Text(
                     content.duration,
-                    style: theme.textTheme.bodySmall?.copyWith(color: ColorPalette.textSecondaryColor),
+                    style: theme.textTheme.bodySmall?.copyWith(
+                      color: ColorPalette.textSecondaryColor,
+                    ),
                   ),
                   if (content.maturityRating != null) ...[
                     const Padding(
                       padding: EdgeInsets.symmetric(horizontal: 4.0),
-                      child: Text('•', style: TextStyle(color: ColorPalette.textSecondaryColor)),
+                      child: Text(
+                        '•',
+                        style: TextStyle(
+                          color: ColorPalette.textSecondaryColor,
+                        ),
+                      ),
                     ),
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 1),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 4,
+                        vertical: 1,
+                      ),
                       decoration: BoxDecoration(
                         color: ColorPalette.textSecondaryColor,
                         borderRadius: BorderRadius.circular(2),
@@ -144,6 +170,13 @@ class FeaturedContent extends StatelessWidget {
                     child: ElevatedButton.icon(
                       onPressed: () {
                         // Navigate to player
+                        Navigator.of(context).pushNamed(
+                          '/video-player',
+                          arguments: {
+                            'content': content,
+                            'videoUrl': 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4', // Mock URL
+                          },
+                        );
                       },
                       icon: const Icon(Icons.play_arrow),
                       label: const Text('Play'),
@@ -163,7 +196,9 @@ class FeaturedContent extends StatelessWidget {
                     },
                     icon: const Icon(Icons.add),
                     style: IconButton.styleFrom(
-                      backgroundColor: ColorPalette.surfaceColor.withOpacity(0.7),
+                      backgroundColor: ColorPalette.surfaceColor.withOpacity(
+                        0.7,
+                      ),
                       foregroundColor: ColorPalette.textPrimaryColor,
                     ),
                   ),
@@ -177,7 +212,9 @@ class FeaturedContent extends StatelessWidget {
                     },
                     icon: const Icon(Icons.info_outline),
                     style: IconButton.styleFrom(
-                      backgroundColor: ColorPalette.surfaceColor.withOpacity(0.7),
+                      backgroundColor: ColorPalette.surfaceColor.withOpacity(
+                        0.7,
+                      ),
                       foregroundColor: ColorPalette.textPrimaryColor,
                     ),
                   ),

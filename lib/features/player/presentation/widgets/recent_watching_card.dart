@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import '../../../../core/theme/color_palette.dart';
+import '../../../home/domain/entities/content_entity.dart';
 
 class RecentWatchingCard extends StatelessWidget {
   final String title;
@@ -20,6 +21,23 @@ class RecentWatchingCard extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         // Navigate to content details or resume playback
+        Navigator.of(context).pushNamed(
+          '/video-player',
+          arguments: {
+            'content': ContentEntity(
+              id: 'mock-id',
+              title: title,
+              description: 'Recently watched',
+              posterUrl: thumbnailUrl,
+              backdropUrl: thumbnailUrl,
+              rating: 4.5,
+              releaseYear: 2023,
+              categories: ['Drama'],
+              duration: '45 min',
+            ),
+            'videoUrl': 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4', // Mock URL
+          },
+        );
       },
       child: Container(
         decoration: BoxDecoration(
@@ -65,10 +83,7 @@ class RecentWatchingCard extends StatelessWidget {
                   gradient: LinearGradient(
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
-                    colors: [
-                      Colors.transparent,
-                      Colors.black.withOpacity(0.8),
-                    ],
+                    colors: [Colors.transparent, Colors.black.withOpacity(0.8)],
                   ),
                 ),
               ),

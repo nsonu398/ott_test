@@ -17,6 +17,8 @@ class Routes {
   // Content details
   static const String contentDetails = '/content-details';
   static const String episodeList = '/episode-list';
+  static const String videoPlayer = '/video-player';
+
 
   // User specific routes
   static const String settings = '/settings';

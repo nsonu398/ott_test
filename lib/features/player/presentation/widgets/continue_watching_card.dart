@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import '../../../../core/theme/color_palette.dart';
+import '../../../home/domain/entities/content_entity.dart';
 
 class ContinueWatchingCard extends StatelessWidget {
   final String title;
@@ -64,16 +65,40 @@ class ContinueWatchingCard extends StatelessWidget {
               ),
               Positioned.fill(
                 child: Center(
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: ColorPalette.primaryColor,
-                      shape: BoxShape.circle,
-                    ),
-                    padding: const EdgeInsets.all(12),
-                    child: const Icon(
-                      Icons.play_arrow,
-                      color: Colors.white,
-                      size: 24,
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).pushNamed(
+                        '/video-player',
+                        arguments: {
+                          'content': ContentEntity(
+                            id: 'mock-id',
+                            title: title,
+                            description: 'Continue watching',
+                            posterUrl: thumbnailUrl,
+                            backdropUrl: thumbnailUrl,
+                            rating: 4.5,
+                            releaseYear: 2023,
+                            categories: ['Drama'],
+                            duration: '45 min',
+                          ),
+                          'episodeTitle': episode,
+                          'videoUrl':
+                              'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
+                          // Mock URL
+                        },
+                      );
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: ColorPalette.primaryColor,
+                        shape: BoxShape.circle,
+                      ),
+                      padding: const EdgeInsets.all(12),
+                      child: const Icon(
+                        Icons.play_arrow,
+                        color: Colors.white,
+                        size: 24,
+                      ),
                     ),
                   ),
                 ),
@@ -86,7 +111,10 @@ class ContinueWatchingCard extends StatelessWidget {
                     color: Colors.black.withOpacity(0.7),
                     borderRadius: BorderRadius.circular(4),
                   ),
-                  padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 6,
+                    vertical: 2,
+                  ),
                   child: Text(
                     remainingTime,
                     style: const TextStyle(
@@ -104,7 +132,9 @@ class ContinueWatchingCard extends StatelessWidget {
           LinearProgressIndicator(
             value: progress,
             backgroundColor: ColorPalette.surfaceColor.withOpacity(0.5),
-            valueColor: const AlwaysStoppedAnimation<Color>(ColorPalette.primaryColor),
+            valueColor: const AlwaysStoppedAnimation<Color>(
+              ColorPalette.primaryColor,
+            ),
             minHeight: 3,
           ),
 
@@ -164,11 +194,7 @@ class ContinueWatchingCard extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: 8),
         child: Column(
           children: [
-            Icon(
-              icon,
-              color: ColorPalette.textSecondaryColor,
-              size: 18,
-            ),
+            Icon(icon, color: ColorPalette.textSecondaryColor, size: 18),
             const SizedBox(height: 4),
             Text(
               label,

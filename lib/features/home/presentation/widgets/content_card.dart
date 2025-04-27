@@ -22,7 +22,13 @@ class ContentCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        // Navigate to content details
+        Navigator.of(context).pushNamed(
+          '/video-player',
+          arguments: {
+            'content': content,
+            'videoUrl': 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4', // Mock URL
+          },
+        );
       },
       child: Container(
         width: width,
