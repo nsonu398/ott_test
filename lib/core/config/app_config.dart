@@ -46,7 +46,7 @@ class AppConfig {
   }
 
   void _initDevelopment() {
-    apiBaseUrl = 'https://dev-api.ottapp.com/v1';
+    apiBaseUrl = 'http://106.51.158.125:3000/';
     apiKey = 'dev_api_key';
     apiTimeout = 30; // seconds
 

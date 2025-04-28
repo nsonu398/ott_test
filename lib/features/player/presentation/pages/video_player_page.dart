@@ -52,7 +52,7 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
     // For now, let's use a sample video URL that actually works
     _videoPlayerController = VideoPlayerController.network(
       // Use a real sample video URL - you would replace this with widget.videoUrl in production
-      'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
+      'http://106.51.158.125:3000/api/stream/${widget.content.id}',
     );
 
     await _videoPlayerController.initialize();

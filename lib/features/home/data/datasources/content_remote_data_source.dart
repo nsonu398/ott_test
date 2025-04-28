@@ -16,14 +16,27 @@ class ContentRemoteDataSourceImpl implements ContentRemoteDataSource {
 
   ContentRemoteDataSourceImpl({required this.client});
 
+  // lib/features/home/data/datasources/content_remote_data_source.dart
+
   @override
   Future<List<ContentModel>> getTrendingContent() async {
     try {
-      final response = await client.get('/content/trending');
+      final response = await client.get('/videos');
 
       return (response['data'] as List)
           .map((item) => ContentModel.fromJson(item))
           .toList();
+    } catch (e) {
+      throw ServerException(message: e.toString());
+    }
+  }
+
+  @override
+  Future<ContentModel> getContentDetails(String id) async {
+    try {
+      final response = await client.get('/videos/$id');
+
+      return ContentModel.fromJson(response['data']);
     } catch (e) {
       throw ServerException(message: e.toString());
     }
@@ -37,17 +50,6 @@ class ContentRemoteDataSourceImpl implements ContentRemoteDataSource {
       return (response['data'] as List)
           .map((item) => ContentModel.fromJson(item))
           .toList();
-    } catch (e) {
-      throw ServerException(message: e.toString());
-    }
-  }
-
-  @override
-  Future<ContentModel> getContentDetails(String id) async {
-    try {
-      final response = await client.get('/content/$id');
-
-      return ContentModel.fromJson(response['data']);
     } catch (e) {
       throw ServerException(message: e.toString());
     }
