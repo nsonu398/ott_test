@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/theme/color_palette.dart';
 import '../widgets/content_carousel.dart';
-import '../widgets/featured_content.dart';
+import '../widgets/featured_content_carousel.dart';
 import '../widgets/category_selector.dart';
 import '../../domain/entities/content_entity.dart';
 import '../../../explore/presentation/pages/explore_page.dart';
@@ -27,18 +27,7 @@ class _HomePageState extends State<HomePage> {
     'All', 'Movies', 'TV Shows', 'Originals', 'Documentaries'
   ];
 
-  // Mock featured content - In a real app, this would also come from a repository
-  final ContentEntity featuredContent = ContentEntity(
-    id: '1',
-    title: 'Stranger Things',
-    description: 'When a young boy vanishes, a small town uncovers a mystery involving secret experiments, terrifying supernatural forces, and one strange little girl.',
-    posterUrl: 'https://cors-anywhere.herokuapp.com/https://drive.google.com/uc?export=view&id=1hWYEMA8bkFiFthDBmb8TPHc9B53Eb2V6',
-    backdropUrl: 'https://cors-anywhere.herokuapp.com/https://drive.google.com/uc?export=view&id=1hWYEMA8bkFiFthDBmb8TPHc9B53Eb2V6',
-    rating: 4.5,
-    releaseYear: 2016,
-    categories: ['Sci-Fi', 'Horror', 'Drama'],
-    duration: '50 min',
-  );
+  // We'll remove the hardcoded featured content and select it from the API response
 
   @override
   Widget build(BuildContext context) {
@@ -93,6 +82,9 @@ class _HomePageState extends State<HomePage> {
 
     return BlocBuilder<HomeBloc, HomeState>(
       builder: (context, state) {
+        // We no longer need to select a single featured content
+        // as we're showing all content items in the carousel
+
         return SafeArea(
           child: RefreshIndicator(
             color: ColorPalette.primaryColor,
@@ -142,9 +134,16 @@ class _HomePageState extends State<HomePage> {
                   ],
                 ),
 
-                // Featured Content
+                // Featured Content Carousel - Shows all videos in a sliding UI
                 SliverToBoxAdapter(
-                  child: FeaturedContent(content: featuredContent),
+                  child: FeaturedContentCarousel(
+                    contentList: state is HomeLoaded
+                        ? state.trendingContent
+                        : state is HomeRefreshing
+                        ? state.trendingContent
+                        : [],
+                    isLoading: state is HomeLoading || state is HomeRefreshing,
+                  ),
                 ),
 
                 // Categories
@@ -303,6 +302,8 @@ class _HomePageState extends State<HomePage> {
       },
     );
   }
+
+  // The shimmer loading effect has been moved to the FeaturedContentCarousel widget
 
   // These mock data generators can be removed once you implement proper API calls for these categories
   List<ContentEntity> _getMoviesContent() {
