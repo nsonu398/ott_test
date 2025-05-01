@@ -21,7 +21,7 @@ class ContentRemoteDataSourceImpl implements ContentRemoteDataSource {
   @override
   Future<List<ContentModel>> getTrendingContent() async {
     try {
-      final response = await client.get('/videos');
+      final response = await client.get('/api/videos');
 
       return (response['data'] as List)
           .map((item) => ContentModel.fromJson(item))
@@ -34,7 +34,7 @@ class ContentRemoteDataSourceImpl implements ContentRemoteDataSource {
   @override
   Future<ContentModel> getContentDetails(String id) async {
     try {
-      final response = await client.get('/videos/$id');
+      final response = await client.get('/api/videos/$id');
 
       return ContentModel.fromJson(response['data']);
     } catch (e) {
@@ -45,7 +45,7 @@ class ContentRemoteDataSourceImpl implements ContentRemoteDataSource {
   @override
   Future<List<ContentModel>> getContentByCategory(String category) async {
     try {
-      final response = await client.get('/content/category/$category');
+      final response = await client.get('/api/content/category/$category');
 
       return (response['data'] as List)
           .map((item) => ContentModel.fromJson(item))
@@ -58,7 +58,7 @@ class ContentRemoteDataSourceImpl implements ContentRemoteDataSource {
   @override
   Future<List<ContentModel>> searchContent(String query) async {
     try {
-      final response = await client.get('/content/search?q=$query');
+      final response = await client.get('/api/content/search?q=$query');
 
       return (response['data'] as List)
           .map((item) => ContentModel.fromJson(item))

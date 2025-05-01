@@ -35,7 +35,7 @@ void main() async {
   );
 
   // Initialize app configuration
-  AppConfig.instance.initialize(environment: Environment.development);
+  AppConfig.instance.initialize(environment: Environment.staging);
 
   // Initialize dependencies
   await di.init();

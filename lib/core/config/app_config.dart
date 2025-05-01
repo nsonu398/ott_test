@@ -46,7 +46,7 @@ class AppConfig {
   }
 
   void _initDevelopment() {
-    apiBaseUrl = 'http://106.51.158.125:3000/';
+    apiBaseUrl = 'https://localhost:3000';
     apiKey = 'dev_api_key';
     apiTimeout = 30; // seconds
 
@@ -67,7 +67,7 @@ class AppConfig {
   }
 
   void _initStaging() {
-    apiBaseUrl = 'https://staging-api.ottapp.com/v1';
+    apiBaseUrl = 'https://api.ott.chandrasekharsahu.com:3000';
     apiKey = 'staging_api_key';
     apiTimeout = 20; // seconds
 

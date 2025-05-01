@@ -40,7 +40,9 @@ class ContentModel extends ContentEntity {
       description: json['description'],
       posterUrl: json['poster_url'],
       backdropUrl: json['backdrop_url'],
-      rating: (json['rating'] as num).toDouble(),
+      rating: json['rating'] is String
+          ? double.tryParse(json['rating']) ?? 0.0
+          : (json['rating'] as num).toDouble(),
       releaseYear: json['release_year'],
       categories: List<String>.from(json['categories']),
       duration: json['duration'],

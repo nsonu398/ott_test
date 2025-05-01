@@ -1,5 +1,6 @@
 // lib/di/injection_container.dart
 
+import 'package:flutter/foundation.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
 import 'package:internet_connection_checker/internet_connection_checker.dart';
@@ -46,7 +47,7 @@ Future<void> init() async {
 
   //! Core
   serviceLocator.registerLazySingleton<NetworkInfo>(
-        () => NetworkInfoImpl(serviceLocator()),
+        () => NetworkInfoImpl(kIsWeb ? null : serviceLocator()),
   );
 
   serviceLocator.registerLazySingleton(() => ApiClient(serviceLocator()));
@@ -56,5 +57,7 @@ Future<void> init() async {
   final sharedPreferences = await SharedPreferences.getInstance();
   serviceLocator.registerLazySingleton(() => sharedPreferences);
   serviceLocator.registerLazySingleton(() => http.Client());
-  serviceLocator.registerLazySingleton(() => InternetConnectionChecker());
+  if (!kIsWeb) {
+    serviceLocator.registerLazySingleton(() => InternetConnectionChecker());
+  }
 }

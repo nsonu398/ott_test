@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:video_player/video_player.dart';
 import 'package:chewie/chewie.dart';
+import '../../../../core/config/app_config.dart';
 import '../../../../core/theme/color_palette.dart';
 import '../../domain/entities/video_quality.dart';
 import '../../../home/domain/entities/content_entity.dart';
@@ -14,7 +15,8 @@ class VideoPlayerPage extends StatefulWidget {
   final String? episodeTitle;
   final String videoUrl;
 
-  const VideoPlayerPage({
+
+  VideoPlayerPage({
     Key? key,
     required this.content,
     this.episodeTitle,
@@ -26,6 +28,7 @@ class VideoPlayerPage extends StatefulWidget {
 }
 
 class _VideoPlayerPageState extends State<VideoPlayerPage> {
+  final baseUrl = AppConfig.instance.apiBaseUrl;
   late VideoPlayerController _videoPlayerController;
   ChewieController? _chewieController;
   bool _isLoading = true;
@@ -50,9 +53,9 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
   Future<void> _initializePlayer() async {
     // For actual implementation, you would use the URL provided
     // For now, let's use a sample video URL that actually works
-    _videoPlayerController = VideoPlayerController.network(
+    _videoPlayerController = VideoPlayerController.networkUrl(
       // Use a real sample video URL - you would replace this with widget.videoUrl in production
-      'http://106.51.158.125:3000/api/stream/${widget.content.id}',
+      Uri.parse('${baseUrl}/api/stream/${widget.content.id}'),
     );
 
     await _videoPlayerController.initialize();
